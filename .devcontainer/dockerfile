@@ -1,0 +1,9 @@
+FROM mcr.microsoft.com/vscode/devcontainers/cpp:ubuntu-20.04
+
+WORKDIR /workspace
+
+RUN apt-get update -y \
+    && apt-get install build-essential -y \
+    && apt-get install cmake -y
+
+
