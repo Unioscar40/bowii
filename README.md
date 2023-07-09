@@ -24,4 +24,4 @@ Follow these steps to clone the Bowii repository:
 3. Run the following command to clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/bowii.git
+   git clone https://github.com/Unioscar40/bowii.git
