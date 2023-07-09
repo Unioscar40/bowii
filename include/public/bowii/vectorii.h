@@ -9,10 +9,12 @@ namespace bowii::vector {
  * The size of arrays must be multiple of 4 
  * Return de dot product
 */
-float DotProductSSE(const float *array1, const float *array2, const size_t tam);
+float DotProductSSE(const float* array1, const float* array2, size_t tam);
 
-float* SubVectorSSE(const float *array1, const float *array2, const size_t tam);
+float* SubVectorSSE(const float* array1, const float* array2, size_t tam);
 
-float* AddVectorSSE(const float *array1, const float *array2, const size_t tam);
+float* AddVectorSSE(const float* array1, const float* array2, size_t tam);
+
+void CopyVectorSSE(const float* source, float* dest, size_t tam);
 
 }
