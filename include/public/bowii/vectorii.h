@@ -13,4 +13,6 @@ float DotProductSSE(const float *array1, const float *array2, const size_t tam);
 
 float* SubVectorSSE(const float *array1, const float *array2, const size_t tam);
 
+float* AddVectorSSE(const float *array1, const float *array2, const size_t tam);
+
 }
