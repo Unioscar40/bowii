@@ -25,3 +25,17 @@ Follow these steps to clone the Bowii repository:
 
    ```bash
    git clone https://github.com/Unioscar40/bowii.git
+   ```
+4. Create a build directory:
+   
+   ```bash
+   mkdir build
+   ```
+5. go to build directory and make this:
+   
+   ```bash
+   cd build
+   cmake ..
+   cmake --build .
+   ```
+6. With this you obtain the static lib `libbowii.a`
