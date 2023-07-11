@@ -11,9 +11,9 @@ namespace bowii::vector {
 */
 float DotProductSSE(const float* array1, const float* array2, size_t tam);
 
-float* SubVectorSSE(const float* array1, const float* array2, size_t tam);
+void SubVectorSSE(const float* array1, const float* array2, float *sol, size_t tam);
 
-float* AddVectorSSE(const float* array1, const float* array2, size_t tam);
+void AddVectorSSE(const float* array1, const float* array2, float *sol, size_t tam);
 
 void CopyVectorSSE(const float* source, float* dest, size_t tam);
 

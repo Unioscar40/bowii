@@ -22,36 +22,30 @@ float DotProductSSE(const float *array1, const float *array2, size_t tam) {
     return result;
 }
 
-float* SubVectorSSE(const float *array1, const float *array2, size_t tam) {
+void SubVectorSSE(const float *array1, const float *array2, float *sol, size_t tam) {
     
-    float* result = (float *)bowii::utils::aligned_memorySSE(sizeof(float)*tam);
-
     __m128 v1,v2,res;
 
     for(size_t i = 0 ; i < tam ; i+=4) {
         v1 = _mm_load_ps(&array1[i]);
         v2 = _mm_load_ps(&array2[i]);
         res = _mm_sub_ps(v1, v2); 
-        _mm_store_ps(&result[i],res);
+        _mm_store_ps(&sol[i],res);
     }
 
-    return result;
 }
 
-float* AddVectorSSE(const float *array1, const float *array2, size_t tam) {
+void AddVectorSSE(const float *array1, const float *array2, float *sol, size_t tam) {
     
-    float* result = (float *)bowii::utils::aligned_memorySSE(sizeof(float)*tam);
-
     __m128 v1,v2,res;
 
     for(size_t i = 0 ; i < tam ; i+=4) {
         v1 = _mm_load_ps(&array1[i]);
         v2 = _mm_load_ps(&array2[i]);
         res = _mm_add_ps(v1, v2); 
-        _mm_store_ps(&result[i],res);
+        _mm_store_ps(&sol[i],res);
     }
 
-    return result;
 }
 
 void CopyVectorSSE(const float* source, float* dest, size_t tam) {
