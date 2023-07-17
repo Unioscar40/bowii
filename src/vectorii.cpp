@@ -17,11 +17,13 @@ MathVector::MathVector(size_t tam) {
 }
 
 MathVector::MathVector(const float* v) {
-    this->Copy(v);
+    mElem = (float *)Utils::AlignedMemory(sizeof(v));
+    std::memcpy((void *)v, (void *)mElem, sizeof(v));
 }
 
 MathVector::MathVector(const MathVector& mv) {
-    this->Copy(mv);
+    mElem = (float *)Utils::AlignedMemory(mv.Size()*sizeof(float));
+    std::memcpy((void *)mv.Data(), (void *)mElem, sizeof(mv.Size()*sizeof(float)));
 }
 
 MathVector::~MathVector() {
@@ -48,7 +50,8 @@ MathVector& MathVector::operator=(const float* v) {
 }
 
 MathVector& MathVector::operator=(const MathVector& mv) {
-    *this = mv.Data();
+    mElem = (float *)Utils::AlignedMemory(mv.Size()*sizeof(float));
+    std::memcpy((void *)mv.Data(), (void *)mElem, sizeof(mv.Size()*sizeof(float)));
 }
 
 float* MathVector::Data() const {
