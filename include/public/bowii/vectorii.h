@@ -37,4 +37,15 @@ void AddVectorSSE(const float* array1, const float* array2, float *sol, size_t t
 
 void CopyVectorSSE(const float* source, float* dest, size_t tam);
 
+// void CopyVectorSSE(const float* source, float* dest, size_t tam) {
+    
+//     __m128 v1;
+
+//     for(size_t i = 0; i < tam; i+=4) {
+//         v1 = _mm_load_ps(&source[i]);
+//         _mm_store_ps(&dest[i],v1);
+//     }
+// }
+
+
 }
