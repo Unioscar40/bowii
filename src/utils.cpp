@@ -1,10 +1,10 @@
 #include <bowii/utils.h>
 #include "constants.h"
-namespace bowii::utils {
+namespace Bowii::Utils {
 
 #define _ALIGNED_BYTES 16
 
-void* aligned_memorySSE(size_t size) {
+void* AlignedMemory(size_t size) {
     return aligned_alloc(_ALIGNED_BYTES_SSE, size);
 }
 
