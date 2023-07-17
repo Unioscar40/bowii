@@ -42,14 +42,13 @@ const float& MathVector::operator[] (int i) const{
     return mElem[i];
 }
 
-void MathVector::Copy(const float* v) {
+MathVector& MathVector::operator=(const float* v) {
     mElem = (float *)Utils::AlignedMemory(sizeof(v));
     std::memcpy((void *)v, (void *)mElem, sizeof(v));
 }
 
-void MathVector::Copy(const MathVector& mv) {
-    mElem = (float *)Utils::AlignedMemory(mv.Size()*sizeof(float));
-    std::memcpy((void *)mv.Data(), (void *)mElem, sizeof(mv.Size()*sizeof(float)));
+MathVector& MathVector::operator=(const MathVector& mv) {
+    *this = mv.Data();
 }
 
 float* MathVector::Data() const {

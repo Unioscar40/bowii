@@ -14,9 +14,10 @@ public:
     ~MathVector();
     float& operator[](int i); //For class vector no const
     const float& operator[](int i) const; //For class vector const
+    
     size_t Size() const;
-    void Copy(const float* v);
-    void Copy(const MathVector& mv);
+    MathVector& operator=(const float* v);
+    MathVector& operator=(const MathVector& mv);
     float* Data() const;
 
 private:
