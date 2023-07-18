@@ -129,7 +129,7 @@ MathVector& MathVector::operator-(const MathVector& mv) {
     if(slice >= 4)
         for(; i < slice ; i+=4) {
             v1 = _mm_load_ps(&mElem[i]);
-            v2 = _mm_load_ps(&mv[i]);
+            v2 = _mm_load_ps(&mv.Data()[i]);
             res = _mm_sub_ps(v1, v2); 
             _mm_store_ps(&mElem[i],res);
         }
