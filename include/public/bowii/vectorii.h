@@ -1,9 +1,21 @@
 #pragma once
 #include <stdlib.h>
-
-
+#include <iterator>
 
 namespace Bowii {
+
+class Iterator : public std::iterator<std::input_iterator_tag, float> {
+    float* p;
+    public:
+        Iterator(float *x);
+        Iterator(const Iterator& mit);
+        Iterator& operator++();
+        Iterator operator++(int);
+        bool operator==(const Iterator& it) const;
+        bool operator!=(const Iterator& it) const;
+        float& operator*();
+
+};
 
 class MathVector {
 public:
@@ -14,15 +26,19 @@ public:
     ~MathVector();
     float& operator[](int i); //For class vector no const
     const float& operator[](int i) const; //For class vector const
-    
-    size_t Size() const;
-    MathVector& operator=(const float* v);
     MathVector& operator=(const MathVector& mv);
-    float* Data() const;
+    MathVector& operator+(const MathVector& mv);
+    MathVector& operator-(const MathVector& mv);
+    size_t Size() const;
+    const float* Data() const;
+    Iterator Begin();
+    const Iterator Begin() const;
+    Iterator End();
+    const Iterator End() const;
 
 private:
     float* mElem; 
-    size_t tam; 
+    size_t mTam; 
 };
 /**
  * This function do the dot product of two float arrays

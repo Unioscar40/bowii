@@ -8,22 +8,58 @@
 
 namespace Bowii {
 
+//CLASS ITERATOR
+Iterator::Iterator(float *x) {
+    p = x;
+}
+
+Iterator::Iterator(const Iterator& mit) {
+    p = mit.p;
+}
+
+Iterator& Iterator::operator++() {
+    p++;
+    return *this;
+}
+
+Iterator Iterator::operator++(int) {
+    Iterator tmp(*this);
+    operator++();
+    return tmp;
+}
+
+bool Iterator::operator==(const Iterator& it) const {
+    return p == it.p;
+}
+
+bool Iterator::operator!=(const Iterator& it) const {
+    return p != it.p;
+}
+
+float& Iterator::operator*() {
+    return *p;
+}
+
+//CLASS MATHVECTOR
 MathVector::MathVector(size_t tam) {
 
     if(tam < 0)
         throw std::length_error{"Vector constructor: negative size"};
 
     mElem = (float *)Utils::AlignedMemory(tam);
+    mTam = tam;
 }
 
 MathVector::MathVector(const float* v) {
     mElem = (float *)Utils::AlignedMemory(sizeof(v));
     std::memcpy((void *)v, (void *)mElem, sizeof(v));
+    mTam = sizeof(v)/sizeof(float);
 }
 
 MathVector::MathVector(const MathVector& mv) {
     mElem = (float *)Utils::AlignedMemory(mv.Size()*sizeof(float));
     std::memcpy((void *)mv.Data(), (void *)mElem, sizeof(mv.Size()*sizeof(float)));
+    mTam = mv.Size();
 }
 
 MathVector::~MathVector() {
@@ -44,18 +80,36 @@ const float& MathVector::operator[] (int i) const{
     return mElem[i];
 }
 
-MathVector& MathVector::operator=(const float* v) {
-    mElem = (float *)Utils::AlignedMemory(sizeof(v));
-    std::memcpy((void *)v, (void *)mElem, sizeof(v));
-}
-
 MathVector& MathVector::operator=(const MathVector& mv) {
+    delete[] mElem;
     mElem = (float *)Utils::AlignedMemory(mv.Size()*sizeof(float));
     std::memcpy((void *)mv.Data(), (void *)mElem, sizeof(mv.Size()*sizeof(float)));
+    mTam = mv.Size();
+    return *this;
 }
 
-float* MathVector::Data() const {
+size_t MathVector::Size() const {
+    return mTam;
+}
+
+const float* MathVector::Data() const {
     return mElem;
+}
+
+Iterator MathVector::Begin() {
+    return Iterator(mElem);
+}
+
+const Iterator MathVector::Begin() const{
+    return Iterator(mElem);
+}
+
+Iterator MathVector::End() {
+    return Iterator(mElem + mTam);
+}
+
+const Iterator MathVector::End() const{
+    return Iterator(mElem + mTam);
 }
 
 // float DotProductSSE(const float *array1, const float *array2, size_t tam) {
