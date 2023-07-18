@@ -6,6 +6,8 @@
 #include <bowii/utils.h>
 #include "immintrin.h"
 
+//TODO: Revisar métodos de copia
+
 namespace Bowii {
 
 //CLASS ITERATOR
@@ -46,19 +48,19 @@ MathVector::MathVector(size_t tam) {
     if(tam < 0)
         throw std::length_error{"Vector constructor: negative size"};
 
-    mElem = (float *)Utils::AlignedMemory(tam);
+    mElem = (float *)Utils::AlignedMemory(tam*sizeof(float));
     mTam = tam;
 }
 
 MathVector::MathVector(const float* v) {
     mElem = (float *)Utils::AlignedMemory(sizeof(v));
-    std::memcpy((void *)v, (void *)mElem, sizeof(v));
+    std::memcpy((void *)mElem, (void *)v, sizeof(v));
     mTam = sizeof(v)/sizeof(float);
 }
 
 MathVector::MathVector(const MathVector& mv) {
     mElem = (float *)Utils::AlignedMemory(mv.Size()*sizeof(float));
-    std::memcpy((void *)mv.Data(), (void *)mElem, sizeof(mv.Size()*sizeof(float)));
+    std::memcpy((void *)mElem, (void *)mv.Data(), sizeof(mv.Size()*sizeof(float)));
     mTam = mv.Size();
 }
 
@@ -83,7 +85,8 @@ const float& MathVector::operator[] (int i) const{
 MathVector& MathVector::operator=(const MathVector& mv) {
     delete[] mElem;
     mElem = (float *)Utils::AlignedMemory(mv.Size()*sizeof(float));
-    std::memcpy((void *)mv.Data(), (void *)mElem, sizeof(mv.Size()*sizeof(float)));
+    std::cout << "SIZE: " << mv.Size() << std::endl;
+    std::memcpy((void *)mElem, (void *)mv.Data(), sizeof(mv.Size()*sizeof(float)));
     mTam = mv.Size();
     return *this;
 }
@@ -174,17 +177,16 @@ float MathVector::DotProduct(const MathVector& mv1, const MathVector& mv2){
     int resto {(int)mv1.Size() % 4};
     int slice {(int)mv1.Size() - resto};
     size_t i = 0;
-
     if(slice >= 4)
         for(; i < slice ; i+=4) {
-            v1 = _mm_load_ps(&mv1[i]);
-            v2 = _mm_load_ps(&mv2[i]);
+            v1 = _mm_load_ps(&mv1.Data()[i]);
+            v2 = _mm_load_ps(&mv2.Data()[i]);
             res = _mm_dp_ps(v1, v2, 0xff);
             result += _mm_cvtss_f32(res);
         }
-
-    for(; i < mv1.Size(); i++) 
+    for(; i < mv1.Size(); i++){
         result+= mv1[i] * mv2[i];
+    }
     
     return result;
 }
