@@ -20,9 +20,9 @@ class Iterator : public std::iterator<std::input_iterator_tag, float> {
 class MathVector {
     friend std::ostream& operator<<(std::ostream& os, const MathVector& mv);
 public:
-    MathVector() = default;
+    MathVector();
     MathVector(size_t tam);
-    MathVector(const float* v);
+    MathVector(const float* v, size_t tam);
     MathVector(const MathVector& v);
     ~MathVector();
     float& operator[](int i); //For class vector no const

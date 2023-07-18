@@ -2,6 +2,9 @@
 #include <cstdint>
 #include <cstring>
 
+#include <stdio.h>
+#include <string.h>
+
 #include <bowii/vectorii.h>
 #include <bowii/utils.h>
 #include "immintrin.h"
@@ -43,6 +46,11 @@ float& Iterator::operator*() {
 }
 
 //CLASS MATHVECTOR
+MathVector::MathVector() {
+    mElem = (float*)Utils::AlignedMemory(sizeof(float));
+    mTam = 0;
+}
+
 MathVector::MathVector(size_t tam) {
 
     if(tam < 0)
@@ -52,15 +60,31 @@ MathVector::MathVector(size_t tam) {
     mTam = tam;
 }
 
-MathVector::MathVector(const float* v) {
-    mElem = (float *)Utils::AlignedMemory(sizeof(v));
-    std::memcpy((void *)mElem, (void *)v, sizeof(v));
-    mTam = sizeof(v)/sizeof(float);
+MathVector::MathVector(const float* v, size_t tam) {
+    mElem = (float *)Utils::AlignedMemory(tam*sizeof(float));
+    memcpy((void *)mElem, (void *)v, tam*sizeof(float));
+    mTam = tam;
 }
 
 MathVector::MathVector(const MathVector& mv) {
+
     mElem = (float *)Utils::AlignedMemory(mv.Size()*sizeof(float));
-    std::memcpy((void *)mElem, (void *)mv.Data(), sizeof(mv.Size()*sizeof(float)));
+    __m128 v1;
+
+    int resto {(int)mv.Size() % 4};
+    int slice {(int)mv.Size() - resto};
+    size_t i = 0;
+
+
+    if(slice >= 4)
+        for(; i < slice; i+=4) {
+            v1 = _mm_load_ps(&mv.Data()[i]);
+            _mm_store_ps(&mElem[i],v1);
+        }
+        
+    for(;i < mv.Size(); i++) {
+        mElem[i] = mv.Data()[i];
+    }
     mTam = mv.Size();
 }
 
@@ -85,8 +109,21 @@ const float& MathVector::operator[] (int i) const{
 MathVector& MathVector::operator=(const MathVector& mv) {
     delete[] mElem;
     mElem = (float *)Utils::AlignedMemory(mv.Size()*sizeof(float));
-    std::cout << "SIZE: " << mv.Size() << std::endl;
-    std::memcpy((void *)mElem, (void *)mv.Data(), sizeof(mv.Size()*sizeof(float)));
+    __m128 v1;
+
+    int resto {(int)mv.Size() % 4};
+    int slice {(int)mv.Size() - resto};
+    size_t i = 0;
+
+    if(slice >= 4)
+        for(; i < slice; i+=4) {
+            v1 = _mm_load_ps(&mv.Data()[i]);
+            _mm_store_ps(&mElem[i],v1);
+        }
+        
+    for(;i < mv.Size(); i++) {
+        mElem[i] = mv.Data()[i];
+    }
     mTam = mv.Size();
     return *this;
 }
@@ -184,6 +221,7 @@ float MathVector::DotProduct(const MathVector& mv1, const MathVector& mv2){
             res = _mm_dp_ps(v1, v2, 0xff);
             result += _mm_cvtss_f32(res);
         }
+
     for(; i < mv1.Size(); i++){
         result+= mv1[i] * mv2[i];
     }
