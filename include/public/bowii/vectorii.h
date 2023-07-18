@@ -27,6 +27,7 @@ public:
     ~MathVector();
     float& operator[](int i); //For class vector no const
     const float& operator[](int i) const; //For class vector const
+    //TODO: Revisar operadores de asignación suma y resta
     MathVector& operator=(const MathVector& mv);
     MathVector& operator+(const MathVector& mv);
     MathVector& operator-(const MathVector& mv);

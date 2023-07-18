@@ -106,7 +106,7 @@ const float& MathVector::operator[] (int i) const{
     return mElem[i];
 }
 
-MathVector& MathVector::operator=(const MathVector& mv) {
+MathVector& MathVector::operator=(const MathVector& mv){
     delete[] mElem;
     mElem = (float *)Utils::AlignedMemory(mv.Size()*sizeof(float));
     __m128 v1;
@@ -124,6 +124,7 @@ MathVector& MathVector::operator=(const MathVector& mv) {
     for(;i < mv.Size(); i++) {
         mElem[i] = mv.Data()[i];
     }
+
     mTam = mv.Size();
     return *this;
 }
@@ -153,7 +154,7 @@ MathVector& MathVector::operator+(const MathVector& mv) {
     return *this;
 }
 
-MathVector& MathVector::operator-(const MathVector& mv) {
+MathVector& MathVector::operator-(const MathVector& mv){
     
     __m128 v1,v2,res;
 
