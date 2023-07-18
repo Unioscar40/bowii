@@ -29,6 +29,7 @@ public:
     MathVector& operator=(const MathVector& mv);
     MathVector& operator+(const MathVector& mv);
     MathVector& operator-(const MathVector& mv);
+    //TODO: ISTREAM OPERATOR
     size_t Size() const;
     const float* Data() const;
     Iterator Begin();
