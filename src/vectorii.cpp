@@ -191,6 +191,16 @@ float MathVector::DotProduct(const MathVector& mv1, const MathVector& mv2){
     return result;
 }
 
+std::ostream& operator<<(std::ostream& os, const MathVector& mv) {
+    os << "[";
+    for(size_t i = 0; i < mv.Size(); i++) {
+        os << " " << mv[i];
+    }
+    os << " ]";
+
+    return os;
+}
+
 } 
 
 

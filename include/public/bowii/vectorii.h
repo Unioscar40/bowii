@@ -1,7 +1,7 @@
 #pragma once
 #include <stdlib.h>
 #include <iterator>
-
+#include <iostream>
 namespace Bowii {
 
 class Iterator : public std::iterator<std::input_iterator_tag, float> {
@@ -18,6 +18,7 @@ class Iterator : public std::iterator<std::input_iterator_tag, float> {
 };
 
 class MathVector {
+    friend std::ostream& operator<<(std::ostream& os, const MathVector& mv);
 public:
     MathVector() = default;
     MathVector(size_t tam);
@@ -29,7 +30,6 @@ public:
     MathVector& operator=(const MathVector& mv);
     MathVector& operator+(const MathVector& mv);
     MathVector& operator-(const MathVector& mv);
-    //TODO: ISTREAM OPERATOR
     size_t Size() const;
     const float* Data() const;
     Iterator Begin();
