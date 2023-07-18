@@ -88,6 +88,56 @@ MathVector& MathVector::operator=(const MathVector& mv) {
     return *this;
 }
 
+MathVector& MathVector::operator+(const MathVector& mv) {
+    
+    __m128 v1,v2,res;
+
+    if(mv.Size() != mTam)
+        throw std::out_of_range{"The size is diferent"};
+
+    int resto {(int)mTam % 4};
+    int slice {(int)mTam - resto};
+    size_t i = 0;
+    if(slice >= 4)
+        for(; i < slice ; i+=4) {
+            v1 = _mm_load_ps(&mElem[i]);
+            v2 = _mm_load_ps(&mv.Data()[i]);
+            res = _mm_add_ps(v1, v2); 
+            _mm_store_ps(&mElem[i],res);
+        }
+
+    for(; i < mTam; i++) {
+        mElem[i] = mElem[i] + mv.Data()[i];
+    }
+    
+    return *this;
+}
+
+MathVector& MathVector::operator-(const MathVector& mv) {
+    
+    __m128 v1,v2,res;
+
+    if(mv.Size() != mTam)
+        throw std::out_of_range{"The size is diferent"};
+
+    int resto {(int)mTam % 4};
+    int slice {(int)mTam - resto};
+    size_t i = 0;
+    if(slice >= 4)
+        for(; i < slice ; i+=4) {
+            v1 = _mm_load_ps(&mElem[i]);
+            v2 = _mm_load_ps(&mv[i]);
+            res = _mm_sub_ps(v1, v2); 
+            _mm_store_ps(&mElem[i],res);
+        }
+
+    for(; i < mTam; i++) {
+        mElem[i] = mElem[i] - mv[i];
+    }
+    
+    return *this;
+}
+
 size_t MathVector::Size() const {
     return mTam;
 }
@@ -112,59 +162,34 @@ const Iterator MathVector::End() const{
     return Iterator(mElem + mTam);
 }
 
-// float DotProductSSE(const float *array1, const float *array2, size_t tam) {
+float MathVector::DotProduct(const MathVector& mv1, const MathVector& mv2){
     
-//     float result {0.f};
+    float result {0.f};
 
-//     __m128 v1,v2,res;
+    __m128 v1,v2,res;
 
-//     for(size_t i = 0 ; i < tam ; i+=4) {
-//         v1 = _mm_load_ps(&array1[i]);
-//         v2 = _mm_load_ps(&array2[i]);
-//         res = _mm_dp_ps(v1, v2, 0xff);
-//         result += _mm_cvtss_f32(res);
-//     }
+    if(mv1.Size() != mv2.Size())
+        throw std::out_of_range{"The size is diferent"};
 
-//     return result;
-// }
+    int resto {(int)mv1.Size() % 4};
+    int slice {(int)mv1.Size() - resto};
+    size_t i = 0;
 
-// void SubVectorSSE(const float *array1, const float *array2, float *sol, size_t tam) {
+    if(slice >= 4)
+        for(; i < slice ; i+=4) {
+            v1 = _mm_load_ps(&mv1[i]);
+            v2 = _mm_load_ps(&mv2[i]);
+            res = _mm_dp_ps(v1, v2, 0xff);
+            result += _mm_cvtss_f32(res);
+        }
+
+    for(; i < mv1.Size(); i++) 
+        result+= mv1[i] * mv2[i];
     
-//     __m128 v1,v2,res;
+    return result;
+}
 
-//     for(size_t i = 0 ; i < tam ; i+=4) {
-//         v1 = _mm_load_ps(&array1[i]);
-//         v2 = _mm_load_ps(&array2[i]);
-//         res = _mm_sub_ps(v1, v2); 
-//         _mm_store_ps(&sol[i],res);
-//     }
-
-// }
-
-// void AddVectorSSE(const float *array1, const float *array2, float *sol, size_t tam) {
-    
-//     __m128 v1,v2,res;
-
-//     for(size_t i = 0 ; i < tam ; i+=4) {
-//         v1 = _mm_load_ps(&array1[i]);
-//         v2 = _mm_load_ps(&array2[i]);
-//         res = _mm_add_ps(v1, v2); 
-//         _mm_store_ps(&sol[i],res);
-//     }
-
-// }
-
-// void CopyVectorSSE(const float* source, float* dest, size_t tam) {
-    
-//     __m128 v1;
-
-//     for(size_t i = 0; i < tam; i+=4) {
-//         v1 = _mm_load_ps(&source[i]);
-//         _mm_store_ps(&dest[i],v1);
-//     }
-// }
-
-} //end bowii::vector
+} 
 
 
     
