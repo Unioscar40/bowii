@@ -9,8 +9,6 @@
 #include <bowii/utils.h>
 #include "immintrin.h"
 
-//TODO: Revisar métodos de copia
-
 namespace Bowii {
 
 //CLASS ITERATOR
