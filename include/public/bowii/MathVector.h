@@ -23,21 +23,24 @@ public:
     MathVector();
     MathVector(size_t tam);
     MathVector(const float* v, size_t tam);
-    MathVector(const MathVector& v);
+    MathVector(const MathVector& mv);
+    MathVector(MathVector&& mv);
     ~MathVector();
     float& operator[](int i); //For class vector no const
     const float& operator[](int i) const; //For class vector const
-    //TODO: Revisar operadores de asignación suma y resta
     MathVector& operator=(const MathVector& mv);
+    MathVector& operator=(MathVector&& mv);
     MathVector operator+(const MathVector& mv);
     MathVector operator-(const MathVector& mv);
+    MathVector operator*(const MathVector& mv);
+    MathVector operator/(const MathVector& mv);
     size_t Size() const;
-    float* Data();
     const float* Data() const;
     Iterator Begin();
     const Iterator Begin() const;
     Iterator End();
     const Iterator End() const;
+    float Accumulate();
     static float DotProduct(const MathVector& v1, const MathVector& v2);
 
 private:
@@ -46,3 +49,4 @@ private:
 };
 
 }
+

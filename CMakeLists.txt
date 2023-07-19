@@ -10,7 +10,7 @@ add_library(${TARGET_NAME} STATIC)
 target_sources(${TARGET_NAME} 
     PRIVATE
         src/utils.cpp
-        src/vectorii.cpp
+        src/MathVector.cpp
 )
 
 target_include_directories(${TARGET_NAME}
@@ -20,35 +20,5 @@ target_include_directories(${TARGET_NAME}
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/public>
 )
 
-
-
-
-# file(GLOB_RECURSE TARGET_SOURCES
-#     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
-#     "${CMAKE_CURRENT_SOURCE_DIR}/src/**/*.cpp"
-#     )
-
-# file(GLOB_RECURSE TARGET_PUBLIC_HEADERS
-#     "${CMAKE_CURRENT_SOURCE_DIR}/include/public/**/*.hpp"
-# )
-
-# file(GLOB_RECURSE TARGET_PRIVATE_HEADERS
-#     "${CMAKE_CURRENT_SOURCE_DIR}/include/private/**/*.hpp"
-# )
-
-# target_include_directories(${TARGET_NAME}
-#     PUBLIC
-#         "${CMAKE_CURRENT_SOURCE_DIR}/include/public"
-#     PRIVATE
-#         "${CMAKE_CURRENT_SOURCE_DIR}/include/private"
-# )
-
-# target_sources(${TARGET_NAME}
-#     PUBLIC
-#         ${TARGET_PUBLIC_HEADERS}
-#     PRIVATE
-#         ${TARGET_PRIVATE_HEADERS}
-#         ${TARGET_SOURCES}
-# )
 
 
