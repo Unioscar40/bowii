@@ -127,38 +127,42 @@ MathVector& MathVector::operator=(const MathVector& mv){
     return *this;
 }
 
-MathVector& MathVector::operator+(const MathVector& mv) {
+MathVector MathVector::operator+(const MathVector& mv) {
     
     __m128 v1,v2,res;
 
     if(mv.Size() != mTam)
         throw std::out_of_range{"The size is diferent"};
+
+    MathVector copy(mElem, mTam);
 
     int resto {(int)mTam % 4};
     int slice {(int)mTam - resto};
     size_t i = 0;
     if(slice >= 4)
         for(; i < slice ; i+=4) {
-            v1 = _mm_load_ps(&mElem[i]);
+            v1 = _mm_load_ps(&copy.Data()[i]);
             v2 = _mm_load_ps(&mv.Data()[i]);
             res = _mm_add_ps(v1, v2); 
-            _mm_store_ps(&mElem[i],res);
+            _mm_store_ps(&copy[i],res);
         }
 
     for(; i < mTam; i++) {
-        mElem[i] = mElem[i] + mv.Data()[i];
+        copy[i] = copy.Data()[i] + mv.Data()[i];
     }
     
     return *this;
 }
 
-MathVector& MathVector::operator-(const MathVector& mv){
+MathVector MathVector::operator-(const MathVector& mv){
     
     __m128 v1,v2,res;
 
     if(mv.Size() != mTam)
         throw std::out_of_range{"The size is diferent"};
 
+    MathVector copy(mTam);
+    
     int resto {(int)mTam % 4};
     int slice {(int)mTam - resto};
     size_t i = 0;
@@ -167,18 +171,22 @@ MathVector& MathVector::operator-(const MathVector& mv){
             v1 = _mm_load_ps(&mElem[i]);
             v2 = _mm_load_ps(&mv.Data()[i]);
             res = _mm_sub_ps(v1, v2); 
-            _mm_store_ps(&mElem[i],res);
+            _mm_store_ps(&copy.Data()[i],res);
         }
 
     for(; i < mTam; i++) {
-        mElem[i] = mElem[i] - mv[i];
+        copy.Data()[i] = mElem[i] - mv.Data()[i];
     }
-    
-    return *this;
+
+    return copy;
 }
 
 size_t MathVector::Size() const {
     return mTam;
+}
+
+float* MathVector::Data() {
+    return mElem;
 }
 
 const float* MathVector::Data() const {

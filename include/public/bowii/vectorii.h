@@ -29,9 +29,10 @@ public:
     const float& operator[](int i) const; //For class vector const
     //TODO: Revisar operadores de asignación suma y resta
     MathVector& operator=(const MathVector& mv);
-    MathVector& operator+(const MathVector& mv);
-    MathVector& operator-(const MathVector& mv);
+    MathVector operator+(const MathVector& mv);
+    MathVector operator-(const MathVector& mv);
     size_t Size() const;
+    float* Data();
     const float* Data() const;
     Iterator Begin();
     const Iterator Begin() const;
