@@ -1,5 +1,5 @@
-#include "utils.h"
-#include "constants.h"
+#include "Utils.h"
+#include "Constants.h"
 namespace Bowii::Utils {
 
 #define _ALIGNED_BYTES 16

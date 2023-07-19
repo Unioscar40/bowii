@@ -6,7 +6,7 @@
 #include <string.h>
 
 #include <bowii/MathVector.h>
-#include "utils.h"
+#include "Utils.h"
 #include "immintrin.h"
 
 namespace Bowii {
