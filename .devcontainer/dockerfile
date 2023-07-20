@@ -7,8 +7,9 @@ RUN apt-get update -y \
     && apt-get install cmake -y
 
 RUN apt-get install libgtest-dev -y
-RUN cd /usr/src/gtest
-RUN sudo cmake CMakeLists.txt && sudo make
+RUN cd /usr/src/gtest && \
+    sudo cmake CMakeLists.txt && sudo make
+RUN sudo cp /usr/src/gtest/lib/*.a /usr/lib
 
 
 
