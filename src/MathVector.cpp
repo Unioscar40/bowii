@@ -88,7 +88,6 @@ MathVector::MathVector(const MathVector& mv) {
 
 MathVector::MathVector(MathVector&& mv) {
 
-    std::cout << "Llamamos al constructor de movimiento" << std::endl;
     mElem = (float *)Utils::AlignedMemory(mv.Size()*sizeof(float));
     __m128 v1;
 
@@ -317,6 +316,4 @@ std::ostream& operator<<(std::ostream& os, const MathVector& mv) {
 
 } 
 
-
-    
 

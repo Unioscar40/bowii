@@ -20,12 +20,33 @@ class Iterator : public std::iterator<std::input_iterator_tag, float> {
 class MathVector {
     friend std::ostream& operator<<(std::ostream& os, const MathVector& mv);
 public:
+    /**
+     * Default constructor
+    */
     MathVector();
+    /**
+     * Create a MathVector with asigned tam 
+    */
     MathVector(size_t tam);
+    /**
+     * Create a MathVector from an array of floats and his size
+    */
     MathVector(const float* v, size_t tam);
+    /**
+     * Copy constructor
+    */
     MathVector(const MathVector& mv);
+    /**
+     * Move constructor
+    */
     MathVector(MathVector&& mv);
+    /**
+     * Default destructor 
+    */
     ~MathVector();
+    /**
+     * 
+    */
     float& operator[](int i); //For class vector no const
     const float& operator[](int i) const; //For class vector const
     MathVector& operator=(const MathVector& mv);
@@ -40,7 +61,6 @@ public:
     const Iterator Begin() const;
     Iterator End();
     const Iterator End() const;
-    float Accumulate();
     static float DotProduct(const MathVector& v1, const MathVector& v2);
 
 private:
