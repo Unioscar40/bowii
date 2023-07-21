@@ -49,6 +49,53 @@ TEST(MathVectorTest, EqualOperatorFalse) {
     ASSERT_FALSE(expected);
 }
 
+TEST(MathVectorTest, EqualOperatorSizeFalse) {
+    size_t tam1{512};
+    size_t tam2{300};
+    Bowii::MathVector mv1(tam1);
+    Bowii::MathVector mv2(tam2);
+
+    bool expected = (mv1 == mv2);
+    ASSERT_FALSE(expected);
+}
+
+TEST(MathVectorTest, InequalityOperatorTrue) {
+    size_t tam{512};
+    Bowii::MathVector mv1(tam);
+    Bowii::MathVector mv2(tam);
+
+    for(size_t i = 0; i < mv1.Size(); i++) {
+        mv1[i] = 5;
+        mv2[i] = 4; 
+    }
+
+    bool expected = (mv1 != mv2);
+    ASSERT_TRUE(expected);
+}
+
+TEST(MathVectorTest, InequalityOperatorSizeTrue) {
+    size_t tam{512};
+    Bowii::MathVector mv1(tam);
+    Bowii::MathVector mv2(tam+3);
+
+    bool expected = (mv1 != mv2);
+    ASSERT_TRUE(expected);
+}
+
+TEST(MathVectorTest, InequalityOperatorFalse) {
+    size_t tam{512};
+    Bowii::MathVector mv1(tam);
+    Bowii::MathVector mv2(tam);
+
+    for(size_t i = 0; i < mv1.Size(); i++) {
+        mv1[i] = 5;
+        mv2[i] = 5; 
+    }
+
+    bool expected = (mv1 != mv2);
+    ASSERT_FALSE(expected);
+}
+
 TEST(MathVectorTest, MoveConstructor) {
     size_t tam{512};
     Bowii::MathVector mv1(tam);

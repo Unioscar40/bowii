@@ -282,6 +282,20 @@ bool MathVector::operator==(const MathVector& mv) {
     return true;
 }
 
+bool MathVector::operator!=(const MathVector& mv) {
+
+    if(mTam != mv.Size()) {
+        return true;
+    }
+
+    for(size_t i = 0; i < mTam; i++) {
+        if(mElem[i] != mv.mElem[i])
+            return true;
+    }
+    
+    return false;
+}
+
 size_t MathVector::Size() const {
     return mTam;
 }
