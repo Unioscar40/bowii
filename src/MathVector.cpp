@@ -128,10 +128,25 @@ const float& MathVector::operator[] (int i) const{
 }
 
 MathVector& MathVector::operator=(const MathVector& mv){
-    
     delete[] mElem;
-    mElem = mv.mElem;
-    mTam = mv.mTam;
+    mElem = (float *)Utils::AlignedMemory(mv.Size()*sizeof(float));
+    __m128 v1;
+
+    int resto {(int)mv.Size() % 4};
+    int slice {(int)mv.Size() - resto};
+    size_t i = 0;
+
+
+    if(slice >= 4)
+        for(; i < slice; i+=4) {
+            v1 = _mm_load_ps(&mv.Data()[i]);
+            _mm_store_ps(&mElem[i],v1);
+        }
+        
+    for(;i < mv.Size(); i++) {
+        mElem[i] = mv.Data()[i];
+    }
+    mTam = mv.Size();
     return *this;
 }
 
@@ -251,6 +266,20 @@ MathVector MathVector::operator/(const MathVector& mv){
     }
 
     return copy;
+}
+
+bool MathVector::operator==(const MathVector& mv) {
+
+    if(mTam != mv.Size()) {
+        return false;
+    }
+
+    for(size_t i = 0; i < mTam; i++) {
+        if(mElem[i] != mv.mElem[i])
+            return false;
+    }
+    
+    return true;
 }
 
 size_t MathVector::Size() const {
