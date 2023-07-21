@@ -110,7 +110,7 @@ TEST(MathVectorTest, DotProductIrregularTam) {
     ASSERT_EQ(expected, actual);
 }
 
-TEST(MathVectorTest, OperatorAdd) {
+TEST(MathVectorTest, OperatorAddRegularTam) {
     size_t tam {512};
     Bowii::MathVector mv1(tam); 
     float v[tam];
@@ -135,7 +135,32 @@ TEST(MathVectorTest, OperatorAdd) {
 
 }
 
-TEST(MathVectorTest, OperatorSub) {
+TEST(MathVectorTest, OperatorAddIrregularTam) {
+    size_t tam {75};
+    Bowii::MathVector mv1(tam); 
+    float v[tam];
+    float expected[tam];
+    bool sol = true;
+
+    for(unsigned i = 0; i < tam ; i++) {
+        mv1[i] = 5;
+        v[i] = 5;
+    }
+    Bowii::MathVector actual;
+
+    actual = mv1 + mv1;    
+
+    for(size_t i = 0; i < tam; i++) {
+        expected[i] = v[i] + v[i];
+        if(expected[i] != actual[i])
+            sol = false;
+    }
+
+    ASSERT_TRUE(sol);
+
+}
+
+TEST(MathVectorTest, OperatorSubRegularTam) {
     size_t tam {512};
     Bowii::MathVector mv1(tam); 
     float v[tam];
@@ -160,7 +185,32 @@ TEST(MathVectorTest, OperatorSub) {
 
 }
 
-TEST(MathVectorTest, OperatorDiv) {
+TEST(MathVectorTest, OperatorSubIrregularTam) {
+    size_t tam {75};
+    Bowii::MathVector mv1(tam); 
+    float v[tam];
+    float expected[tam];
+    bool sol = true;
+
+    for(unsigned i = 0; i < tam ; i++) {
+        mv1[i] = 5;
+        v[i] = 5;
+    }
+    Bowii::MathVector actual;
+
+    actual = mv1 - mv1;    
+
+    for(size_t i = 0; i < tam; i++) {
+        expected[i] = v[i] - v[i];
+        if(expected[i] != actual[i])
+            sol = false;
+    }
+
+    ASSERT_TRUE(sol);
+
+}
+
+TEST(MathVectorTest, OperatorDivRegularTam) {
     size_t tam {512};
     Bowii::MathVector mv1(tam); 
     float v[tam];
@@ -185,8 +235,58 @@ TEST(MathVectorTest, OperatorDiv) {
 
 }
 
-TEST(MathVectorTest, OperatorMul) {
+TEST(MathVectorTest, OperatorDivIrregularTam) {
+    size_t tam {75};
+    Bowii::MathVector mv1(tam); 
+    float v[tam];
+    float expected[tam];
+    bool sol = true;
+
+    for(unsigned i = 0; i < tam ; i++) {
+        mv1[i] = 5;
+        v[i] = 5;
+    }
+    Bowii::MathVector actual;
+
+    actual = mv1 - mv1;    
+
+    for(size_t i = 0; i < tam; i++) {
+        expected[i] = v[i] - v[i];
+        if(expected[i] != actual[i])
+            sol = false;
+    }
+
+    ASSERT_TRUE(sol);
+
+}
+
+TEST(MathVectorTest, OperatorMulRegularTam) {
     size_t tam {512};
+    Bowii::MathVector mv1(tam); 
+    float v[tam];
+    float expected[tam];
+    bool sol = true;
+
+    for(unsigned i = 0; i < tam ; i++) {
+        mv1[i] = 5;
+        v[i] = 5;
+    }
+    Bowii::MathVector actual;
+
+    actual = mv1 * mv1;    
+
+    for(size_t i = 0; i < tam; i++) {
+        expected[i] = v[i] * v[i];
+        if(expected[i] != actual[i])
+            sol = false;
+    }
+
+    ASSERT_TRUE(sol);
+
+}
+
+TEST(MathVectorTest, OperatorMulIrregularTam) {
+    size_t tam {75};
     Bowii::MathVector mv1(tam); 
     float v[tam];
     float expected[tam];

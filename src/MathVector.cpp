@@ -235,7 +235,7 @@ MathVector MathVector::operator*(const MathVector& mv){
         }
 
     for(; i < mTam; i++) {
-        copy.mElem[i] = copy.mElem[i] - mv.mElem[i];
+        copy.mElem[i] = copy.mElem[i] * mv.mElem[i];
     }
 
     return copy;
