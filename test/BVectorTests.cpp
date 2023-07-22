@@ -372,7 +372,8 @@ TEST(BVectorTest, MaxElemRegularTam) {
     for(size_t i = 0; i < tam; i++) {
         mv[i] = i;
     }
-        float expected = 511;
+    
+    float expected = 511;
     ASSERT_EQ(expected,Bowii::BVector::MaxElem(mv));
 }
 

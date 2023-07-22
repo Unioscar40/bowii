@@ -242,11 +242,28 @@ bool BVector::operator==(const BVector& mv) {
         return false;
     }
 
-    for(size_t i = 0; i < mTam; i++) {
+    __m128 v1,v2,cmpResult;
+
+    int resto {(int)mv.Size() % 4};
+    int slice {(int)mv.Size() - resto};
+
+    size_t i = 0;
+
+    if(slice >= 4)
+        for(; i < slice ; i+=4) {
+            v1 = _mm_load_ps(&mElem[i]);
+            v2 = _mm_load_ps(&mv.mElem[i]);
+            cmpResult = _mm_cmpeq_ps(v1, v2);
+            
+            if(_mm_movemask_ps(cmpResult) != 0x0F)
+                return false;
+        }
+    
+
+    for(; i < mv.Size(); i++) {
         if(mElem[i] != mv.mElem[i])
             return false;
     }
-    
     return true;
 }
 
@@ -256,11 +273,28 @@ bool BVector::operator!=(const BVector& mv) {
         return true;
     }
 
-    for(size_t i = 0; i < mTam; i++) {
+    __m128 v1,v2,cmpResult;
+
+    int resto {(int)mv.Size() % 4};
+    int slice {(int)mv.Size() - resto};
+
+    size_t i = 0;
+
+    if(slice >= 4)
+        for(; i < slice ; i+=4) {
+            v1 = _mm_load_ps(&mElem[i]);
+            v2 = _mm_load_ps(&mv.mElem[i]);
+            cmpResult = _mm_cmpeq_ps(v1, v2);
+            
+            if(_mm_movemask_ps(cmpResult) != 0x0F)
+                return true;
+        }
+    
+
+    for(; i < mv.Size(); i++) {
         if(mElem[i] != mv.mElem[i])
             return true;
     }
-    
     return false;
 }
 
