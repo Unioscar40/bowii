@@ -10,9 +10,9 @@ FetchContent_MakeAvailable(googletest)
 add_library(GTest::GTest INTERFACE IMPORTED)
 target_link_libraries(GTest::GTest INTERFACE gtest_main)
 
-add_executable(MathVectorTest MathVectorTests.cpp)
+add_executable(BVectorTest BVectorTests.cpp)
 
-target_link_libraries(MathVectorTest
+target_link_libraries(BVectorTest
     PRIVATE
     GTest::GTest
     bowii

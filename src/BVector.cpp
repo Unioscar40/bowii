@@ -5,51 +5,19 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <bowii/MathVector.h>
+#include <bowii/BVector.h>
 #include "Utils.h"
 #include "immintrin.h"
 
 namespace Bowii {
 
-//CLASS ITERATOR
-Iterator::Iterator(float *x) {
-    p = x;
-}
-
-Iterator::Iterator(const Iterator& mit) {
-    p = mit.p;
-}
-
-Iterator& Iterator::operator++() {
-    p++;
-    return *this;
-}
-
-Iterator Iterator::operator++(int) {
-    Iterator tmp(*this);
-    operator++();
-    return tmp;
-}
-
-bool Iterator::operator==(const Iterator& it) const {
-    return p == it.p;
-}
-
-bool Iterator::operator!=(const Iterator& it) const {
-    return p != it.p;
-}
-
-float& Iterator::operator*() {
-    return *p;
-}
-
-//CLASS MATHVECTOR
-MathVector::MathVector() {
+//CLASS BVector
+BVector::BVector() {
     mElem = (float*)Utils::AlignedMemory(sizeof(float));
     mTam = 0;
 }
 
-MathVector::MathVector(size_t tam) {
+BVector::BVector(size_t tam) {
 
     if(tam < 0)
         throw std::length_error{"Vector constructor: negative size"};
@@ -58,13 +26,13 @@ MathVector::MathVector(size_t tam) {
     mTam = tam;
 }
 
-MathVector::MathVector(const float* v, size_t tam) {
+BVector::BVector(const float* v, size_t tam) {
     mElem = (float *)Utils::AlignedMemory(tam*sizeof(float));
     memcpy((void *)mElem, (void *)v, tam*sizeof(float));
     mTam = tam;
 }
 
-MathVector::MathVector(const MathVector& mv) {
+BVector::BVector(const BVector& mv) {
 
     mElem = (float *)Utils::AlignedMemory(mv.Size()*sizeof(float));
     __m128 v1;
@@ -86,7 +54,7 @@ MathVector::MathVector(const MathVector& mv) {
     mTam = mv.Size();
 }
 
-MathVector::MathVector(MathVector&& mv) {
+BVector::BVector(BVector&& mv) {
 
     mElem = (float *)Utils::AlignedMemory(mv.Size()*sizeof(float));
     __m128 v1;
@@ -109,25 +77,25 @@ MathVector::MathVector(MathVector&& mv) {
     mv.mElem = nullptr;
 }
 
-MathVector::~MathVector() {
+BVector::~BVector() {
     delete[] mElem;
 }
 
-float& MathVector::operator[] (int i) {
+float& BVector::operator[] (int i) {
     if(i < 0 || Size() < i)
-        throw std::out_of_range{"MathVector::operator[]"};
+        throw std::out_of_range{"BVector::operator[]"};
 
     return mElem[i];
 }
 
-const float& MathVector::operator[] (int i) const{
+const float& BVector::operator[] (int i) const{
     if(i < 0 || Size() < i)
-        throw std::out_of_range{"MathVector::operator[]"};
+        throw std::out_of_range{"BVector::operator[]"};
 
     return mElem[i];
 }
 
-MathVector& MathVector::operator=(const MathVector& mv){
+BVector& BVector::operator=(const BVector& mv){
     delete[] mElem;
     mElem = (float *)Utils::AlignedMemory(mv.Size()*sizeof(float));
     __m128 v1;
@@ -150,7 +118,7 @@ MathVector& MathVector::operator=(const MathVector& mv){
     return *this;
 }
 
-MathVector& MathVector::operator=(MathVector&& mv){
+BVector& BVector::operator=(BVector&& mv){
 
     delete[] mElem;
     mElem = mv.mElem;
@@ -160,14 +128,14 @@ MathVector& MathVector::operator=(MathVector&& mv){
     return *this;
 }
 
-MathVector MathVector::operator+(const MathVector& mv) {
+BVector BVector::operator+(const BVector& mv) {
     
     __m128 v1,v2,res;
 
     if(mv.Size() != mTam)
         throw std::out_of_range{"The size is diferent"};
 
-    MathVector copy(mElem, mTam);
+    BVector copy(mElem, mTam);
 
     int resto {(int)mTam % 4};
     int slice {(int)mTam - resto};
@@ -187,14 +155,14 @@ MathVector MathVector::operator+(const MathVector& mv) {
     return copy;
 }
 
-MathVector MathVector::operator-(const MathVector& mv){
+BVector BVector::operator-(const BVector& mv){
     
     __m128 v1,v2,res;
 
     if(mv.Size() != mTam)
         throw std::out_of_range{"The size is diferent"};
 
-    MathVector copy(mElem, mTam);
+    BVector copy(mElem, mTam);
     
     int resto {(int)mTam % 4};
     int slice {(int)mTam - resto};
@@ -214,14 +182,14 @@ MathVector MathVector::operator-(const MathVector& mv){
     return copy;
 }
 
-MathVector MathVector::operator*(const MathVector& mv){
+BVector BVector::operator*(const BVector& mv){
     
     __m128 v1,v2,res;
 
     if(mv.Size() != mTam)
         throw std::out_of_range{"The size is diferent"};
 
-    MathVector copy(mElem, mTam);
+    BVector copy(mElem, mTam);
     
     int resto {(int)mTam % 4};
     int slice {(int)mTam - resto};
@@ -241,14 +209,14 @@ MathVector MathVector::operator*(const MathVector& mv){
     return copy;
 }
 
-MathVector MathVector::operator/(const MathVector& mv){
+BVector BVector::operator/(const BVector& mv){
     
     __m128 v1,v2,res;
 
     if(mv.Size() != mTam)
         throw std::out_of_range{"The size is diferent"};
 
-    MathVector copy(mElem, mTam);
+    BVector copy(mElem, mTam);
     
     int resto {(int)mTam % 4};
     int slice {(int)mTam - resto};
@@ -268,7 +236,7 @@ MathVector MathVector::operator/(const MathVector& mv){
     return copy;
 }
 
-bool MathVector::operator==(const MathVector& mv) {
+bool BVector::operator==(const BVector& mv) {
 
     if(mTam != mv.Size()) {
         return false;
@@ -282,7 +250,7 @@ bool MathVector::operator==(const MathVector& mv) {
     return true;
 }
 
-bool MathVector::operator!=(const MathVector& mv) {
+bool BVector::operator!=(const BVector& mv) {
 
     if(mTam != mv.Size()) {
         return true;
@@ -296,31 +264,15 @@ bool MathVector::operator!=(const MathVector& mv) {
     return false;
 }
 
-size_t MathVector::Size() const {
+size_t BVector::Size() const {
     return mTam;
 }
 
-const float* MathVector::Data() const {
+const float* BVector::Data() const {
     return mElem;
 }
 
-Iterator MathVector::Begin() {
-    return Iterator(mElem);
-}
-
-const Iterator MathVector::Begin() const{
-    return Iterator(mElem);
-}
-
-Iterator MathVector::End() {
-    return Iterator(mElem + mTam);
-}
-
-const Iterator MathVector::End() const{
-    return Iterator(mElem + mTam);
-}
-
-float MathVector::DotProduct(const MathVector& mv1, const MathVector& mv2){
+float BVector::DotProduct(const BVector& mv1, const BVector& mv2){
     
     float result {0.f};
 
@@ -347,7 +299,7 @@ float MathVector::DotProduct(const MathVector& mv1, const MathVector& mv2){
     return result;
 }
 
-std::ostream& operator<<(std::ostream& os, const MathVector& mv) {
+std::ostream& operator<<(std::ostream& os, const BVector& mv) {
     os << "[";
     for(size_t i = 0; i < mv.Size(); i++) {
         os << " " << mv[i];
