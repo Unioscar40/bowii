@@ -1,0 +1,8 @@
+{
+	"name": "bowii-dev-container",
+	"dockerComposeFile":"docker-compose.yml",
+	"service": "bowii-dev-container",
+	"remoteUser": "vscode",
+	"workspaceFolder": "/workspace"
+
+}
