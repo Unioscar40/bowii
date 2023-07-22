@@ -286,8 +286,8 @@ float BVector::DotProduct(const BVector& mv1, const BVector& mv2){
     size_t i = 0;
     if(slice >= 4)
         for(; i < slice ; i+=4) {
-            v1 = _mm_load_ps(&mv1.Data()[i]);
-            v2 = _mm_load_ps(&mv2.Data()[i]);
+            v1 = _mm_load_ps(&mv1.mElem[i]);
+            v2 = _mm_load_ps(&mv2.mElem[i]);
             res = _mm_dp_ps(v1, v2, 0xff);
             result += _mm_cvtss_f32(res);
         }
@@ -297,6 +297,42 @@ float BVector::DotProduct(const BVector& mv1, const BVector& mv2){
     }
     
     return result;
+}
+
+float BVector::MaxElem(const BVector& mv) {
+    float max {0.f};
+
+    __m128 maxValues, v1;
+
+    int resto {(int)mv.Size() % 4};
+    int slice {(int)mv.Size() - resto};
+    size_t i = 0;
+
+    if(slice >= 4) {
+        for(; i < slice; i+=4) {
+            v1 = _mm_load_ps(&mv.mElem[i]);
+            maxValues = _mm_max_ps(maxValues,v1);
+        }
+    }
+
+    float maxArray[4];
+    _mm_store_ps(maxArray,v1);
+
+    max = maxArray[0];
+    for(int tam = 0; tam < 4; tam++) {
+        if(maxArray[tam] > max) {
+            max = maxArray[tam];
+        }
+    }
+
+    for(; i < mv.Size(); i++) {
+        if(mv.mElem[i] > max) {
+            max = mv.mElem[i];
+        }
+    }
+
+    return max;
+
 }
 
 std::ostream& operator<<(std::ostream& os, const BVector& mv) {

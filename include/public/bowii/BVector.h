@@ -46,6 +46,7 @@ public:
     bool operator!=(const BVector& mv);
     size_t Size() const;
     const float* Data() const;
+    static float MaxElem(const BVector &mv);
     static float DotProduct(const BVector& v1, const BVector& v2);
 
 private:

@@ -366,6 +366,26 @@ TEST(BVectorTest, SizeOk) {
 
 }
 
+TEST(BVectorTest, MaxElemRegularTam) {
+    size_t tam{512};
+    Bowii::BVector mv(tam);
+    for(size_t i = 0; i < tam; i++) {
+        mv[i] = i;
+    }
+        float expected = 511;
+    ASSERT_EQ(expected,Bowii::BVector::MaxElem(mv));
+}
+
+TEST(BVectorTest, MaxElemIrregularTam) {
+    size_t tam{517};
+    Bowii::BVector mv(tam);
+    for(size_t i = 0; i < tam; i++) {
+        mv[i] = i;
+    }
+    float expected = 516;
+    ASSERT_EQ(expected,Bowii::BVector::MaxElem(mv));
+}
+
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
